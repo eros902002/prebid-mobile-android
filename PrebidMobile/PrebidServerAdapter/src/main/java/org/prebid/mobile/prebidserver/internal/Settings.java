@@ -20,13 +20,16 @@ public class Settings {
     public static final String COOKIE_HEADER = "Cookie";
     public static final String VERSION_ZERO_HEADER = "Set-cookie";
     public static final String VERSION_ONE_HEADER = "Set-cookie2";
-    public static final String COOKIE_DOMAIN = "http://prebid.adnxs.com";
+    public static final String COOKIE_DOMAIN = "https://prebid.va.pubnative.io";
     // Prebid Server Constants
     // connection settings
     public static final String APPNEXUS_REQUEST_URL_NON_SECURE = "http://prebid.adnxs.com/pbs/v1/openrtb2/auction";
     public static final String APPNEXUS_REQUEST_URL_SECURE = "https://prebid.adnxs.com/pbs/v1/openrtb2/auction";
     public static final String RUBICON_REQUEST_URL_NON_SECURE = "http://prebid-server.rubiconproject.com/openrtb2/auction";
     public static final String RUBICON_REQUEST_URL_SECURE = "https://prebid-server.rubiconproject.com/openrtb2/auction";
+
+    public static final String PUBNATIVE_REQUEST_URL_SECURE = "https://prebid.va.pubnative.io/pbs/v1/openrtb2/auction";
+
 
     public static int connectionTimeOutMillis = 500;
     // request keys
