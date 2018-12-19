@@ -46,6 +46,10 @@ public class PrebidApplication extends Application {
          * Initialise prebid for DFP ad unit
          */
         initialisePrebidForDFP();
+        initialisePrebidForMoPub();
+    }
+
+    private void initialisePrebidForMoPub() {
     }
 
     private void initialisePrebidForDFP() {
