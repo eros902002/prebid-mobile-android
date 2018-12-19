@@ -4,6 +4,10 @@ import android.app.Application;
 import android.os.Build;
 import android.webkit.WebView;
 
+import com.mopub.common.MoPub;
+import com.mopub.common.SdkConfiguration;
+import com.mopub.common.SdkInitializationListener;
+
 import org.prebid.mobile.core.AdUnit;
 import org.prebid.mobile.core.BannerAdUnit;
 import org.prebid.mobile.core.InterstitialAdUnit;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import static org.prebid.mobile.demoapp.Constants.BANNER_300x250;
 import static org.prebid.mobile.demoapp.Constants.BANNER_320x50;
 import static org.prebid.mobile.demoapp.Constants.INTERSTITIAL_FULLSCREEN;
+import static org.prebid.mobile.demoapp.Constants.MOPUB_BANNER_ADUNIT_ID_320x50;
 import static org.prebid.mobile.demoapp.Constants.PBS_ACCOUNT_ID;
 import static org.prebid.mobile.demoapp.Constants.PBS_CONFIG_300x250_APPNEXUS_DEMAND;
 import static org.prebid.mobile.demoapp.Constants.PBS_CONFIG_APPNEXUS_DEMAND;
@@ -50,6 +55,13 @@ public class PrebidApplication extends Application {
     }
 
     private void initialisePrebidForMoPub() {
+        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(MOPUB_BANNER_ADUNIT_ID_320x50).build();
+        MoPub.initializeSdk(this, sdkConfiguration, new SdkInitializationListener() {
+            @Override
+            public void onInitializationFinished() {
+
+            }
+        });
     }
 
     private void initialisePrebidForDFP() {
