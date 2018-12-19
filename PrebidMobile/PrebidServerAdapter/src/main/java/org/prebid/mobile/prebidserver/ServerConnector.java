@@ -22,8 +22,18 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 class ServerConnector extends AsyncTask<Object, Object, JSONObject> {
 
@@ -38,7 +48,7 @@ class ServerConnector extends AsyncTask<Object, Object, JSONObject> {
 
     ServerConnector(JSONObject postData, ServerListener listener, String url, Context context) {
         this.postData = postData;
-        this.listener = new WeakReference<ServerListener>(listener);
+        this.listener = new WeakReference<>(listener);
         this.url = url;
         this.context = context;
     }
@@ -48,7 +58,10 @@ class ServerConnector extends AsyncTask<Object, Object, JSONObject> {
         try {
             URL url = new URL(this.url);
 
+            trustAllCertificates();
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setRequestProperty("Content-Type", "application/json");
@@ -176,6 +189,41 @@ class ServerConnector extends AsyncTask<Object, Object, JSONObject> {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    private void trustAllCertificates() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                        }
+
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                        }
+
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+                    }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
 }
